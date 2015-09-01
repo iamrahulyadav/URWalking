@@ -17,7 +17,8 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);new Intent(this, MainMenue_Activity.class);
+        setContentView(R.layout.activity_login);
+        new Intent(this, MainMenue_Activity.class);
         email = (AutoCompleteTextView) findViewById(R.id.email);
     }
 
