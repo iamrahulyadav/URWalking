@@ -18,7 +18,6 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        new Intent(this, MainMenue_Activity.class);
         email = (AutoCompleteTextView) findViewById(R.id.email);
     }
 
@@ -33,8 +32,11 @@ public class LoginActivity extends Activity {
         else{
             Toast.makeText(getApplicationContext(), (CharSequence) "Bitte Email-Adresse eingeben!", Toast.LENGTH_SHORT).show();
         }
+    }
 
-
+    public void register(View v) {
+        Intent intent = new Intent(this, RegisterActivity.class);
+        this.startActivity(intent);
     }
 
 

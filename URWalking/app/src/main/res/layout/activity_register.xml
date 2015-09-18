@@ -22,45 +22,35 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="50dp"
-                android:text="Willkommen"
+                android:text="Registrieren"
                 android:textColor="@color/black"
                 android:id="@+id/welcome" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="25dp"
-                android:text="bei der URWalking App für das Donaueinkaufszentrum"
-                android:id="@+id/welcome2"
-                android:layout_marginBottom="30dp"/>
 
-            <AutoCompleteTextView android:id="@+id/email" android:layout_width="match_parent"
+            <AutoCompleteTextView android:id="@+id/email_register" android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:hint="@string/prompt_email"
                 android:inputType="textEmailAddress" android:maxLines="1"
                 android:singleLine="true" />
 
-            <EditText android:id="@+id/password" android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:hint="@string/prompt_password"
-                android:imeActionId="@+id/login"
-                android:imeActionLabel="@string/action_sign_in_short"
+            <EditText android:id="@+id/password2" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:hint="@string/password"
+                android:imeActionId="@+id/password2"
+                android:imeActionLabel="@string/password"
                 android:imeOptions="actionUnspecified" android:inputType="textPassword"
                 android:maxLines="1" android:singleLine="true" />
-
-            <Button android:id="@+id/email_sign_in_button" style="?android:textAppearanceSmall"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:background="@drawable/round_tv"
-                android:layout_marginTop="16dp" android:text="@string/action_sign"
-                android:onClick="login"
-                android:textStyle="bold" />
+            <EditText android:id="@+id/password_confirm" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:hint="@string/password_confirm"
+                android:imeActionId="@+id/password_confirm"
+                android:imeActionLabel="@string/password_confirm"
+                android:imeOptions="actionUnspecified" android:inputType="textPassword"
+                android:maxLines="1" android:singleLine="true" />
             <Button android:id="@+id/email_register_button" style="?android:textAppearanceSmall"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:background="@drawable/round_tv"
                 android:layout_marginTop="16dp" android:text="@string/action_register"
-                android:onClick="register"
+                android:onClick="realRegister"
                 android:textStyle="bold" />
 
         </LinearLayout>
     </ScrollView>
 
 </LinearLayout>
-

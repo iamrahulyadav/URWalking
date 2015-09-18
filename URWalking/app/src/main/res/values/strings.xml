@@ -1,11 +1,14 @@
 <resources>
     <string name="app_name">URWalking</string>
     <string name="title_activity_photo_">DEZ-Fotos</string>
-
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Einstellungen</string>
     <string name="title_activity_main_menue_">Hauptmenü</string>
     <string name="title_activity_rate_activity">Bewerten</string>
     <string name="title_activity_profile_">Profil</string>
     <string name="title_activity_help_">Hilfe</string>
+    <string name="title_activity_register">Registrieren</string>
+    <string name="title_activity_camera">Camera</string>
+    <string name="counter">0</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>

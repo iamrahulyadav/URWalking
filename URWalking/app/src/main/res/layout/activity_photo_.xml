@@ -37,9 +37,19 @@
         android:layout_height="wrap_content"
         android:text="camera"
         android:id="@+id/button"
+        android:layout_marginTop="5px"
         android:background="@drawable/round_tv"
-        android:layout_marginTop="37dp"
         android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Galerie"
+        android:layout_marginTop="5px"
+        android:id="@+id/button_gallery"
+        android:background="@drawable/round_tv"
+        android:layout_below="@+id/button"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
