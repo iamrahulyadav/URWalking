@@ -16,11 +16,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
+import com.parse.SignUpCallback;
+
 import java.io.Console;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /*
 *   Activity in der Bilder bewertet werden können
@@ -91,29 +102,36 @@ public class Rate_activity extends AppCompatActivity {
     private void nextpicture(){
         currentPictureKey++;
         current.setImageBitmap(decodeSampledBitmapFromResource(getResources(), R.drawable.four, 100, 100));
-        RateAlgorithm();
+        Rate();
     }
 
-    private void RateAlgorithm(){
+    private void Rate(){
         String counterString = getResources().getString (R.string.counter);
         int Count = 0;
         try {
             Count = Integer.parseInt(counterString);
         }
         catch(Exception e){System.out.println("Could not parse ");}
-        try {
-            Count += 20;
-            String name = "score";
-            String message = Count+"";
-            FileOutputStream fos = openFileOutput(name,MODE_PRIVATE);
-            fos.write(message.getBytes());
-            fos.close();
-            TextView counter = ((TextView) findViewById(R.id.header));
-            counter.setText(message);
-        }
-        catch(Exception e){System.out.println("Could not save ");}
+        Algorithm(ParseUser.getCurrentUser().getInt("score"));
+    }
 
 
+
+    private int Algorithm(int score){
+        score+=20;final int finalScore = score;
+        ParseUser user = ParseUser.getCurrentUser();
+        user.put("score", finalScore);
+        user.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Toast.makeText(getApplicationContext(), (CharSequence) ("Ihr aktuelle score ist: " + finalScore), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), (CharSequence) "hat nicht geworked", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        return score;
     }
 
     public void nicePhoto(View v) {

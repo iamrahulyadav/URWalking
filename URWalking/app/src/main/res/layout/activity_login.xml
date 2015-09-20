@@ -50,7 +50,6 @@
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:background="@drawable/round_tv"
                 android:layout_marginTop="16dp" android:text="@string/action_sign"
-                android:onClick="login"
                 android:textStyle="bold" />
             <Button android:id="@+id/email_register_button" style="?android:textAppearanceSmall"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
