@@ -49,16 +49,31 @@ public class Photo_Activity extends Activity {
         b3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(bitmap!=null)pushPicture();
+                if (bitmap != null) pushPicture();
+                else{
+                    Toast.makeText(getApplicationContext(),("Erst einmal ein Foto machen =)"), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void setupScore(){
+        ParseUser user = ParseUser.getCurrentUser();
+        final int score = user.getInt("score") + 100;
+        user.put("score", score);
+        user.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Toast.makeText(getApplicationContext(),("Ihr aktuelle score ist: " + score), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "hat nicht geworked", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
     private void pushPicture(){
-        setInTitle();
-    }
-
-    private void setInTitle(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Hier bitte das Geschäft eingeben");
 
@@ -109,6 +124,7 @@ public class Photo_Activity extends Activity {
                         if (e == null) {
                             // Show a simple toast message
                             Toast.makeText(Photo_Activity.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
+                            setupScore();
                         } else {
                             Toast.makeText(getApplicationContext(), "Upload didn't work", Toast.LENGTH_SHORT).show();
                         }

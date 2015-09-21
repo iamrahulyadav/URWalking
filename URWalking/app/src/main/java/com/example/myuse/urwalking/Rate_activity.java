@@ -3,35 +3,14 @@ package com.example.myuse.urwalking;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Picture;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-import com.parse.SignUpCallback;
-
-import java.io.Console;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /*
 *   Activity in der Bilder bewertet werden können
@@ -39,8 +18,6 @@ import java.util.List;
 public class Rate_activity extends AppCompatActivity {
   // int[] images = new int[]{R.drawable.one, R.drawable.two, R.drawable.three, R.drawable.four};
     ImageView current;
-    HashMap<Integer,Bitmap> pictures = new HashMap<Integer, Bitmap>();
-    private int currentPictureKey = 1;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,18 +77,11 @@ public class Rate_activity extends AppCompatActivity {
     *   Zukünftiger Start um nächstes Bild auszuwählen
     */
     private void nextpicture(){
-        currentPictureKey++;
         current.setImageBitmap(decodeSampledBitmapFromResource(getResources(), R.drawable.four, 100, 100));
         Rate();
     }
 
     private void Rate(){
-        String counterString = getResources().getString (R.string.counter);
-        int Count = 0;
-        try {
-            Count = Integer.parseInt(counterString);
-        }
-        catch(Exception e){System.out.println("Could not parse ");}
         Algorithm(ParseUser.getCurrentUser().getInt("score"));
     }
 
@@ -125,9 +95,9 @@ public class Rate_activity extends AppCompatActivity {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    Toast.makeText(getApplicationContext(), (CharSequence) ("Ihr aktuelle score ist: " + finalScore), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),("Ihr aktuelle score ist: " + finalScore), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), (CharSequence) "hat nicht geworked", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "hat nicht geworked", Toast.LENGTH_SHORT).show();
                 }
             }
         });
