@@ -74,4 +74,12 @@ public class MainMenue_Activity extends AppCompatActivity {
         this.startActivity(intent);
         Toast.makeText(getApplicationContext(), (CharSequence)"Hier ist Ihr Profil", Toast.LENGTH_SHORT).show();
     }
+
+    public void topPictures(View v)
+    {
+        Intent intent = new Intent(this, TopPicturesActivity.class);
+        intent.putExtra("email",(String)getIntent().getCharSequenceExtra("email"));
+        this.startActivity(intent);
+        Toast.makeText(getApplicationContext(), (CharSequence)"Hier sind die besten Bilder", Toast.LENGTH_SHORT).show();
+    }
 }

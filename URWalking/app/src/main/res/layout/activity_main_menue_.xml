@@ -91,6 +91,21 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/bew"/>
         </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Beste Bilder"
+            android:id="@+id/textView6"
+            android:textColor="@color/text_color"
+            android:textSize="50dp"
+            android:onClick="topPictures"
+            android:gravity="center"
+            android:padding="5dp"
+            android:layout_weight="0.25"
+            android:layout_margin="5dp"
+            android:background="@drawable/round_tv" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

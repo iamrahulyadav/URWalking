@@ -11,4 +11,5 @@
     <string name="counter">0</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_top_pictures">TopPicturesActivity</string>
 </resources>
