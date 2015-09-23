@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -21,8 +20,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 import java.util.Random;
@@ -86,12 +83,6 @@ public class Rate_activity extends AppCompatActivity {
         return inSampleSize;
     }
 
-    /*
-    *   Zukünftiger Start um Bilder aus dem Internet zu ziehen
-    */
-    private void fillPictureArray() {
-    }
-
 
     /*
     *   Zukünftiger Start um nächstes Bild auszuwählen
@@ -100,9 +91,9 @@ public class Rate_activity extends AppCompatActivity {
         Random random = new Random();
         int randomStore = random.nextInt(shops.length) + 1;
         currentName= shops[randomStore];
-        header.setText(shops[randomStore]);
+        header.setText(currentName);
         ParseQuery<ParseObject> query = ParseQuery.getQuery("images");
-        query.whereEqualTo("Store", shops[randomStore]);
+        query.whereEqualTo("Store", currentName);
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> imageList, ParseException e) {
                 if (e == null) {
@@ -130,8 +121,7 @@ public class Rate_activity extends AppCompatActivity {
 
     private int getRandomImageIndex(List<ParseObject> imageList){
         Random random = new Random();
-        int randomIndex = random.nextInt(imageList.size());
-        return randomIndex;
+        return random.nextInt(imageList.size());
     }
 
     private void Rate(){
@@ -147,8 +137,7 @@ public class Rate_activity extends AppCompatActivity {
         user.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                if (e == null) {
-                } else {
+                if (e != null) {
                     Toast.makeText(getApplicationContext(), "hat nicht geworked", Toast.LENGTH_SHORT).show();
                 }
             }
