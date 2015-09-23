@@ -159,7 +159,7 @@ public class Rate_activity extends AppCompatActivity {
     public void nicePhoto(View v) {
         int currentLikes = loadedPic.getInt("likes");
         loadedPic.put("likes",currentLikes+1);//add to likes 1
-        if(check.isActivated()){//add to notthewanted 1
+        if(check.isChecked()){//add to notthewanted 1
             checkPhoto();
         }
         loadedPic.saveInBackground(new SaveCallback() {
@@ -173,7 +173,7 @@ public class Rate_activity extends AppCompatActivity {
     public void badPhoto(View v) {
         int currentDisLikes = loadedPic.getInt("dislikes");
         loadedPic.put("dislikes",currentDisLikes+1);//add to dislikes 1
-        if(check.isActivated()){//add to notthewanted 1
+        if(check.isChecked()){//add to notthewanted 1
             checkPhoto();
         }
         loadedPic.saveInBackground(new SaveCallback() {
