@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.RequestPasswordResetCallback;
 import com.parse.SaveCallback;
 
 public class Profile_Activity extends Activity {
@@ -31,13 +32,24 @@ public class Profile_Activity extends Activity {
                 backFromProfile();
             }
         });
-        Button button2 = (Button)findViewById(R.id.changeMailButton);
-        button2.setOnClickListener(new View.OnClickListener() {
+        Button button3 = (Button)findViewById(R.id.changePasswordButton);
+        button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeMail();
+                changePassword();
             }
         });
+        Button button4 = (Button)findViewById(R.id.presents);
+        button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPresents();
+            }
+        });
+    }
+
+    private void getPresents(){
+        Toast.makeText(getApplicationContext(), "Noch gibt es keine Gutscheine.", Toast.LENGTH_SHORT).show();
     }
 
     public void backFromProfile(){
@@ -73,6 +85,38 @@ public class Profile_Activity extends Activity {
                             mailAdress.setText(m_Text);
                         } else {
                             Toast.makeText(getApplicationContext(), e+"", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+    private void changePassword(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Passwort zurücksetzen lassen?");
+
+        // Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String email = ParseUser.getCurrentUser().getEmail();
+                ParseUser.requestPasswordResetInBackground(email, new RequestPasswordResetCallback() {
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            // An email was successfully sent with reset instructions.
+                            Toast.makeText(getApplicationContext(), "Eine Email wurde an Ihre Adresse gesendet.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Something went wrong. Look at the ParseException to see what's up.
                         }
                     }
                 });

@@ -78,8 +78,6 @@ public class TopPicturesActivity extends AppCompatActivity implements AdapterVie
     }
 
     public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
-
-
         ParseQuery<ParseObject> query = ParseQuery.getQuery("images");
         query.whereEqualTo("Store", stores[position]);
         query.findInBackground(new FindCallback<ParseObject>() {

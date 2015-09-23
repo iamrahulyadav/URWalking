@@ -38,13 +38,33 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Passwort ändern"
+        android:id="@+id/changePasswordButton"
+        android:padding="10dp"
+        android:clickable="true"
+        android:background="@drawable/round_tv"
+        android:layout_below="@+id/profile"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="10px"
+        android:layout_marginRight="10px"
+        android:layout_marginTop="10px"
+        android:layout_marginBottom="10px"
+        android:layout_alignEnd="@+id/user" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Emailaddresse ändern"
         android:id="@+id/changeMailButton"
         android:padding="10dp"
         android:clickable="true"
         android:background="@drawable/round_tv"
         android:layout_below="@+id/profile"
-        android:layout_toEndOf="@+id/user" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="10px"
+        android:layout_marginRight="10px"
+        android:layout_marginTop="10px"
+        android:layout_marginBottom="10px"
+        android:layout_alignStart="@+id/scoreUser" />
 
 
     <TextView android:text="Score:" android:layout_width="wrap_content"
@@ -60,6 +80,16 @@
         android:textSize="24dp"
         android:layout_below="@+id/username"
         android:layout_alignEnd="@+id/username" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gutscheine"
+        android:id="@+id/presents"
+        android:padding="10dp"
+        android:clickable="true"
+        android:background="@drawable/round_tv"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/scoreUser" />
 
 
     <Button
