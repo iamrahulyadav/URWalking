@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -21,6 +22,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 import java.util.Random;
 
@@ -31,6 +34,9 @@ public class Rate_activity extends AppCompatActivity {
     ImageView current;
     ProgressBar progress;
     CheckBox check;
+    TextView header;
+    String currentName;
+    ParseObject loadedPic;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +45,7 @@ public class Rate_activity extends AppCompatActivity {
 
         progress = (ProgressBar) findViewById(R.id.progressBar);
         check = (CheckBox)findViewById(R.id.checkBox);
+        header = (TextView)findViewById(R.id.headerRate);
         current = (ImageView)findViewById(R.id.currentImage);
         nextpicture();
         progress.setVisibility(View.INVISIBLE);
@@ -92,7 +99,8 @@ public class Rate_activity extends AppCompatActivity {
     private void nextpicture(){
         Random random = new Random();
         int randomStore = random.nextInt(shops.length) + 1;
-       // int randomPic = randomStore
+        currentName= shops[randomStore];
+        header.setText(shops[randomStore]);
         ParseQuery<ParseObject> query = ParseQuery.getQuery("images");
         query.whereEqualTo("Store", shops[randomStore]);
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -100,6 +108,7 @@ public class Rate_activity extends AppCompatActivity {
                 if (e == null) {
                     int topImageIndex = getRandomImageIndex(imageList);
                     ParseFile fileObject = (ParseFile) imageList.get(topImageIndex).get("Image");
+                    loadedPic = imageList.get(topImageIndex);
                     fileObject.getDataInBackground(new GetDataCallback() {
                         public void done(byte[] data, ParseException e) {
                             if (e == null) {
@@ -110,6 +119,7 @@ public class Rate_activity extends AppCompatActivity {
                             }
                         }
                     });
+
                 } else {
                     Toast.makeText(getApplicationContext(), "Konnte nicht geladen werden", Toast.LENGTH_SHORT).show();
                 }
@@ -138,7 +148,6 @@ public class Rate_activity extends AppCompatActivity {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    Toast.makeText(getApplicationContext(),("Ihr aktuelle score ist: " + finalScore), Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "hat nicht geworked", Toast.LENGTH_SHORT).show();
                 }
@@ -148,16 +157,37 @@ public class Rate_activity extends AppCompatActivity {
     }
 
     public void nicePhoto(View v) {
+        int currentLikes = loadedPic.getInt("likes");
+        loadedPic.put("likes",currentLikes+1);//add to likes 1
         if(check.isActivated()){//add to notthewanted 1
+            checkPhoto();
         }
-        //add to likes 1
+        loadedPic.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+
+            }
+        });
        nextpicture();
     }
     public void badPhoto(View v) {
+        int currentDisLikes = loadedPic.getInt("dislikes");
+        loadedPic.put("dislikes",currentDisLikes+1);//add to dislikes 1
         if(check.isActivated()){//add to notthewanted 1
+            checkPhoto();
         }
-        //add to dislikes 1
+        loadedPic.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+
+            }
+        });
        nextpicture();
+    }
+
+    private void checkPhoto(){
+        int currentNots = loadedPic.getInt("notTheWanted");
+        loadedPic.put("notTheWanted",currentNots+1);//add to dislikes 1
     }
 
     private static final String[] shops = new String[] {

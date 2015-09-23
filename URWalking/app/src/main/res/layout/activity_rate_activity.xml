@@ -11,14 +11,13 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:textSize="45dp"
-        android:id="@+id/header" />
+        android:id="@+id/headerRate" />
 
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/progressBar"
-        android:layout_below="@+id/header"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="105dp" />
 
@@ -31,7 +30,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/header" />
+        android:layout_below="@+id/headerRate" />
 
     <ImageView
         android:layout_width="120px"
@@ -78,8 +77,8 @@
         android:layout_height="wrap_content"
         android:text="Foto zeigt nicht das Gewünschte"
         android:id="@+id/checkBox"
-        android:layout_below="@+id/header"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/headerRate"
+        android:layout_toEndOf="@+id/imageButtonHaken" />
 
 
 </RelativeLayout>
