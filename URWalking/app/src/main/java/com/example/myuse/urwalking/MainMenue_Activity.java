@@ -82,4 +82,12 @@ public class MainMenue_Activity extends AppCompatActivity {
         this.startActivity(intent);
         Toast.makeText(getApplicationContext(), (CharSequence)"Hier sind die besten Bilder", Toast.LENGTH_SHORT).show();
     }
+
+    public void highscore(View v)
+    {
+        Intent intent = new Intent(this, HighscoreActivity.class);
+        intent.putExtra("email",(String)getIntent().getCharSequenceExtra("email"));
+        this.startActivity(intent);
+        Toast.makeText(getApplicationContext(), (CharSequence)"Hier sehen sie die Top Ten User", Toast.LENGTH_SHORT).show();
+    }
 }

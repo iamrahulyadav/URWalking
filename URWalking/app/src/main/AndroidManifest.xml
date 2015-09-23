@@ -52,6 +52,10 @@
             android:name=".TopPicturesActivity"
             android:label="@string/title_activity_top_pictures" >
         </activity>
+        <activity
+            android:name=".HighscoreActivity"
+            android:label="@string/title_activity_highscore" >
+        </activity>
     </application>
 
 </manifest>
