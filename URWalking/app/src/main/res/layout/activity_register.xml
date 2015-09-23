@@ -19,7 +19,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:hint="E-Mail"
+                android:hint="Benutzername"
                 android:ems="10"
                 android:id="@+id/emailregister"
                 android:layout_alignParentTop="true"
