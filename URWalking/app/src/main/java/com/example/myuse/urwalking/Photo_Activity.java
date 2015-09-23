@@ -149,6 +149,12 @@ public class Photo_Activity extends Activity {
                     imgupload.put("Image", file);
                     // Create a column named "Store" and insert the image
                     imgupload.put("Store", m_Text);
+                    // Create a column named "likes" and insert the value
+                    imgupload.put("likes", 0);
+                    // Create a column named "dislikes" and insert the value
+                    imgupload.put("dislikes", 0);
+                    // Create a column named "notTheWanted" and insert the value
+                    imgupload.put("notTheWanted", 0);
                     // Create the class and the columns
                     imgupload.saveInBackground(new SaveCallback() {
                         @Override
