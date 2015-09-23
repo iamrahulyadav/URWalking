@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import com.parse.FindCallback;
@@ -46,6 +47,7 @@ public class TopPicturesActivity extends AppCompatActivity implements AdapterVie
             }
         });
         topImage = (ImageView) findViewById(R.id.topImage);
+
 
         Spinner dropdown = (Spinner)findViewById(R.id.spinner);
         stores = new String[]{"Alla Turca Feinkost","Apotheke im Donau-Einkaufszentrum","Ärzte im Donau-Gesundheitszentrum", "asiagourmet",
