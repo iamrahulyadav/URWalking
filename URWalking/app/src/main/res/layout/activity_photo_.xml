@@ -21,7 +21,7 @@
         android:layout_below="@+id/textview"
         android:layout_centerHorizontal="true"
         android:textColor="#ff7aff24"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="40sp"
         android:textSize="35dp" />
 
     <ImageView
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
         android:src="@drawable/camera"
-        android:layout_above="@+id/button_gallery"
+        android:layout_above="@+id/button_upload"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="10px"
@@ -61,5 +61,14 @@
         android:background="@drawable/round_tv"
         android:layout_alignTop="@+id/button"
         android:layout_toEndOf="@+id/textview" />
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/uploadBar"
+        android:layout_marginBottom="120dp"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"/>
 
 </RelativeLayout>

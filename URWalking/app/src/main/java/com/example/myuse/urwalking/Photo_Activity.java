@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapRegionDecoder;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.os.Bundle;
@@ -18,8 +19,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.parse.ParseException;
@@ -30,11 +31,11 @@ import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.net.URI;
 
 public class Photo_Activity extends Activity {
     Button b1,b2,b3;
     ImageView iw;
+    ProgressBar uploadBar;
     private String m_Text = "";
     static int CAM_REQUEST;
     private Bitmap bitmap = null;
@@ -48,6 +49,7 @@ public class Photo_Activity extends Activity {
         b2=(Button)findViewById(R.id.button_gallery);
         b3=(Button)findViewById(R.id.button_upload);
         iw= (ImageView)findViewById(R.id.imageView);
+        uploadBar = (ProgressBar) findViewById(R.id.uploadBar);
         //pushPicture();
 
         b1.setOnClickListener(new photoClicker());
@@ -76,7 +78,7 @@ public class Photo_Activity extends Activity {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    Toast.makeText(getApplicationContext(),("Ihr aktuelle score ist: " + score), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), ("Ihr aktuelle score ist: " + score), Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "hat nicht geworked", Toast.LENGTH_SHORT).show();
                 }
@@ -128,60 +130,10 @@ public class Photo_Activity extends Activity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                m_Text = input.getText().toString();
 
-                if (checkIfIsShop()) {
-                    // Convert it to byte
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    // Compress image to lower quality scale 1 - 100
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                    byte[] image = stream.toByteArray();
+                UploadTask upload = new UploadTask();
+                upload.execute(input.getText().toString());
 
-                    // Create the ParseFile
-                    ParseFile file = new ParseFile("store" + ".bmp", image);
-                    // Upload the image into Parse Cloud
-                    file.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Upload didn't work because: "+e, Toast.LENGTH_SHORT).show();
-                                Log.d("Fail", "1 Did not work because: "+e);
-                            }
-                        }
-                    });
-                    // Create a New Class called "images" in Parse
-                    ParseObject imgupload = new ParseObject("images");
-                    // Create a column named "User" and set the string
-                    String username = ParseUser.getCurrentUser().getUsername();
-                    imgupload.put("User", username);
-                    // Create a column named "Image" and set the string
-                    imgupload.put("Image", file);
-                    // Create a column named "Store" and insert the image
-                    imgupload.put("Store", m_Text);
-                    // Create a column named "likes" and insert the value
-                    imgupload.put("likes", 0);
-                    // Create a column named "dislikes" and insert the value
-                    imgupload.put("dislikes", 0);
-                    // Create a column named "notTheWanted" and insert the value
-                    imgupload.put("notTheWanted", 0);
-                    // Create the class and the columns
-                    imgupload.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                // Show a simple toast message
-                                Toast.makeText(Photo_Activity.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
-                                setupScore();
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Upload didn't work 2", Toast.LENGTH_SHORT).show();
-                                Log.d("Fail", "2 Did not work because: " + e);
-                            }
-                        }
-                    });
-                } else {
-                    Toast.makeText(getApplicationContext(), "Bitte vorhandenen Shop auswählen", Toast.LENGTH_SHORT).show();
-                }
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -262,5 +214,80 @@ public class Photo_Activity extends Activity {
         }
     }
 
+    class UploadTask extends AsyncTask<String, Void, Void>
+    {
+
+
+        @Override
+        protected void onPreExecute() {
+            uploadBar.setVisibility(View.VISIBLE);
+            Toast.makeText(getApplicationContext(), "Uploading...", Toast.LENGTH_LONG).show();
+            super.onPreExecute();
+        }
+
+
+        @Override
+        protected Void doInBackground(String... params) {
+
+            m_Text = params[0];
+
+            if (checkIfIsShop()) {
+                // Convert it to byte
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                // Compress image to lower quality scale 1 - 100
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] image = stream.toByteArray();
+
+                // Create the ParseFile
+                ParseFile file = new ParseFile("store" + ".bmp", image);
+                // Upload the image into Parse Cloud
+                file.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Upload didn't work because: " + e, Toast.LENGTH_SHORT).show();
+                            Log.d("Fail", "1 Did not work because: " + e);
+                        }
+                    }
+                });
+                // Create a New Class called "images" in Parse
+                ParseObject imgupload = new ParseObject("images");
+                // Create a column named "User" and set the string
+                String username = ParseUser.getCurrentUser().getUsername();
+                imgupload.put("User", username);
+                // Create a column named "Image" and set the string
+                imgupload.put("Image", file);
+                // Create a column named "Store" and insert the image
+                imgupload.put("Store", m_Text);
+                // Create a column named "likes" and insert the value
+                imgupload.put("likes", 0);
+                // Create a column named "dislikes" and insert the value
+                imgupload.put("dislikes", 0);
+                // Create a column named "notTheWanted" and insert the value
+                imgupload.put("notTheWanted", 0);
+                // Create the class and the columns
+                imgupload.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            // Show a simple toast message
+                            Toast.makeText(Photo_Activity.this, "Image Uploaded", Toast.LENGTH_LONG).show();
+                            uploadBar.setVisibility(View.GONE);
+                            setupScore();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Upload didn't work 2", Toast.LENGTH_SHORT).show();
+                            Log.d("Fail", "2 Did not work because: " + e);
+                        }
+                    }
+                });
+            } else {
+                Toast.makeText(getApplicationContext(), "Bitte vorhandenen Shop auswählen", Toast.LENGTH_SHORT).show();
+            }
+            return null;
+        }
+    }
 
 }
+
+
