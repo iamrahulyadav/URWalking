@@ -3,11 +3,17 @@ package com.example.myuse.urwalking;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapRegionDecoder;
+import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -23,6 +29,8 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.net.URI;
 
 public class Photo_Activity extends Activity {
     Button b1,b2,b3;
@@ -30,6 +38,7 @@ public class Photo_Activity extends Activity {
     private String m_Text = "";
     static int CAM_REQUEST;
     private Bitmap bitmap = null;
+    private File imageFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +130,7 @@ public class Photo_Activity extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 m_Text = input.getText().toString();
 
-                if(checkIfIsShop()) {
+                if (checkIfIsShop()) {
                     // Convert it to byte
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     // Compress image to lower quality scale 1 - 100
@@ -129,14 +138,15 @@ public class Photo_Activity extends Activity {
                     byte[] image = stream.toByteArray();
 
                     // Create the ParseFile
-                    ParseFile file = new ParseFile(m_Text + ".bmp", image);
+                    ParseFile file = new ParseFile("store" + ".bmp", image);
                     // Upload the image into Parse Cloud
                     file.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
                             } else {
-                                Toast.makeText(getApplicationContext(), "Upload didn't work", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Upload didn't work because: "+e, Toast.LENGTH_SHORT).show();
+                                Log.d("Fail", "1 Did not work because: "+e);
                             }
                         }
                     });
@@ -164,12 +174,12 @@ public class Photo_Activity extends Activity {
                                 Toast.makeText(Photo_Activity.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
                                 setupScore();
                             } else {
-                                Toast.makeText(getApplicationContext(), "Upload didn't work", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Upload didn't work 2", Toast.LENGTH_SHORT).show();
+                                Log.d("Fail", "2 Did not work because: " + e);
                             }
                         }
                     });
-                }
-                else{
+                } else {
                     Toast.makeText(getApplicationContext(), "Bitte vorhandenen Shop auswählen", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -184,13 +194,52 @@ public class Photo_Activity extends Activity {
         builder.show();
     }
 
+    public static Bitmap decodeSampledBitmapFromFile (File imageFile,
+                                                         int reqWidth, int reqHeight) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(imageFile.getAbsolutePath(), options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeFile(imageFile.getAbsolutePath(), options);
+    }
+
+    private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+            // Calculate ratios of height and width to requested height and width
+            final int heightRatio = Math.round((float) height / (float) reqHeight);
+            final int widthRatio = Math.round((float) width / (float) reqWidth);
+
+            // Choose the smallest ratio as inSampleSize value, this will guarantee
+            // a final image with both dimensions larger than or equal to the
+            // requested height and width.
+            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+        }
+        return inSampleSize;
+    }
+
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
-        if(requestCode==CAM_REQUEST){
-            Bitmap thumbnail = (Bitmap)data.getExtras().get("data");
-            iw.setImageBitmap(thumbnail);
-            bitmap = thumbnail;
+        if(requestCode==0){
+            Log.d("code", "resultcode: " + resultCode);
+            if (imageFile.exists()){
+                Bitmap bMap = decodeSampledBitmapFromFile(imageFile, 200, 200);
+                iw.setImageBitmap(bMap);
+                //iw.setImageBitmap(BitmapFactory.decodeFile(imageFile.getAbsolutePath()));
+                bitmap = decodeSampledBitmapFromFile(imageFile, 500, 500);
+            }
         }
     }
 
@@ -205,7 +254,11 @@ public class Photo_Activity extends Activity {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent, CAM_REQUEST);
+            imageFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "test.jpg");
+            Uri tempUri = Uri.fromFile(imageFile);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
+            intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+            startActivityForResult(intent, 0);
         }
     }
 
