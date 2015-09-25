@@ -34,6 +34,7 @@ public class Rate_activity extends AppCompatActivity {
     TextView header;
     String currentName;
     ParseObject loadedPic;
+    boolean loading = false;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +92,8 @@ public class Rate_activity extends AppCompatActivity {
         Random random = new Random();
         int randomStore = random.nextInt(shops.length) + 1;
         currentName= shops[randomStore];
+        progress.setVisibility(View.VISIBLE);
+        current.setVisibility(View.INVISIBLE);
         header.setText(currentName);
         ParseQuery<ParseObject> query = ParseQuery.getQuery("images");
         query.whereEqualTo("Store", currentName);
@@ -104,7 +107,9 @@ public class Rate_activity extends AppCompatActivity {
                         public void done(byte[] data, ParseException e) {
                             if (e == null) {
                                 Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                                current.setVisibility(View.VISIBLE);
                                 current.setImageBitmap(bmp);
+                                progress.setVisibility(View.INVISIBLE);
                             } else {
                                 Toast.makeText(getApplicationContext(), "Konnte nicht geladen werden", Toast.LENGTH_SHORT).show();
                             }
@@ -146,32 +151,36 @@ public class Rate_activity extends AppCompatActivity {
     }
 
     public void nicePhoto(View v) {
-        int currentLikes = loadedPic.getInt("likes");
-        loadedPic.put("likes",currentLikes+1);//add to likes 1
-        if(check.isChecked()){//add to notthewanted 1
-            checkPhoto();
-        }
-        loadedPic.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-
+        if(!loading) {
+            int currentLikes = loadedPic.getInt("likes");
+            loadedPic.put("likes", currentLikes + 1);//add to likes 1
+            if (check.isChecked()) {//add to notthewanted 1
+                checkPhoto();
             }
-        });
-       nextpicture();
+            loadedPic.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+
+                }
+            });
+            nextpicture();
+        }
     }
     public void badPhoto(View v) {
-        int currentDisLikes = loadedPic.getInt("dislikes");
-        loadedPic.put("dislikes",currentDisLikes+1);//add to dislikes 1
-        if(check.isChecked()){//add to notthewanted 1
-            checkPhoto();
-        }
-        loadedPic.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-
+        if(!loading) {
+            int currentDisLikes = loadedPic.getInt("dislikes");
+            loadedPic.put("dislikes", currentDisLikes + 1);//add to dislikes 1
+            if (check.isChecked()) {//add to notthewanted 1
+                checkPhoto();
             }
-        });
-       nextpicture();
+            loadedPic.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+
+                }
+            });
+            nextpicture();
+        }
     }
 
     private void checkPhoto(){

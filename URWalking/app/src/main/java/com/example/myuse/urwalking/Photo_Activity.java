@@ -72,13 +72,13 @@ public class Photo_Activity extends Activity {
 
     private void setupScore(){
         ParseUser user = ParseUser.getCurrentUser();
-        final int score = user.getInt("score") + 100;
-        user.put("score", score);
+        //final int score = user.getInt("score") + 100;
+        //user.put("score", score);
         user.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    Toast.makeText(getApplicationContext(), ("Ihr aktuelle score ist: " + score), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), ("Ihr aktuelle score ist: " + score), Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "hat nicht geworked", Toast.LENGTH_SHORT).show();
                 }
