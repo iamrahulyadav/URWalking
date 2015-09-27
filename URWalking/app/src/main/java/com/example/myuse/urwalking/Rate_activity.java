@@ -55,6 +55,7 @@ public class Rate_activity extends AppCompatActivity {
     *   Zukünftiger Start um nächstes Bild auszuwählen
     */
     private void nextpicture(){
+        if (bmp != null) bmp.recycle();
         Random random = new Random();
         int randomStore = random.nextInt(shops.length) + 1;
         currentName= shops[randomStore];

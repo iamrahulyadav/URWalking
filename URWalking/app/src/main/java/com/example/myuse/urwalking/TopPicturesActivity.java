@@ -33,6 +33,7 @@ public class TopPicturesActivity extends AppCompatActivity implements AdapterVie
 
     String[] stores;
     ImageView topImage;
+    Bitmap bmp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +51,11 @@ public class TopPicturesActivity extends AppCompatActivity implements AdapterVie
 
 
         Spinner dropdown = (Spinner)findViewById(R.id.spinner);
-        stores = new String[]{"Alla Turca Feinkost","Apotheke im Donau-Einkaufszentrum","Ärzte im Donau-Gesundheitszentrum", "asiagourmet",
+        stores = new String[]{"Alla Turca Feinkost","Apotheke","Ärzte im Donau-Gesundheitszentrum", "asiagourmet",
                 "Bäcker Bachmeier","Bäckerei Schifferl","Bäckerei Wünsche im Edeka","Barbershop","Base/E-Plus Shop","Baumgartner Optik",
                 "Bears&Friends","Benetton", "Betty Barclay Store","Bijou Brigitte","Biomarkt Neuhoff","Blumen Sitzberger",
                 "Bücher Pustet","Bücher Pustet Extra","Bunte Truhe","C&A","Café & Bäckerei Zink","Café & Konditorei Lederer",
-                "Café Centro","Café Latte","Softeis-Automaten","CBR","Christ Juweliere & Uhrmacher","Cookmal!",
+                "Café Centro","Café Latte","CBR","Christ Juweliere & Uhrmacher","Cookmal!",
                 "Copy & paper","Das Hörhaus – Terzo-Zentrum","Dean & David","Depot","DER Reisebüro","DER Reisebüro in der Galeria Kaufhof",
                 "Deutsche Post & Postbankfinanzcenter","Die Grüne Bar","dm drogeriemarkt","Douglas", "E-Center EDEKA",
                 "Ebner Backwaren","Eiscafé Center Italia","ENGEL Briefmarken und Münzen Gold- und Silberankauf","Equivalenza",
@@ -80,6 +81,7 @@ public class TopPicturesActivity extends AppCompatActivity implements AdapterVie
     }
 
     public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
+        if (bmp != null) bmp.recycle();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("images");
         query.whereEqualTo("Store", stores[position]);
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -93,7 +95,7 @@ public class TopPicturesActivity extends AppCompatActivity implements AdapterVie
                             Log.d("test", "We've got data in data.");
                             // Decode the Byte[] into
                             // Bitmap
-                            Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                            bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
 
                             // Set the Bitmap into the
                             // ImageView
