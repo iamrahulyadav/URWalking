@@ -140,14 +140,23 @@ public class TopPicturesActivity extends AppCompatActivity implements AdapterVie
         Calendar c = Calendar.getInstance();
         long currentDate = c.getTime().getTime();
         int dayDifference = (int) ((currentDate - createdAt)/(1000*60*60*24));
-        double likeValue = (double) (likes/(numberOfRates+1d));
-        double notWantedValue = (double) ((numberOfRates-notWanted)/(numberOfRates+1d));
-        double dayValue = (double) (1d/(dayDifference+1d));
+        //double likeValue = (double) (likes/(numberOfRates+1d));
+        double likeValue = getLikeValue(likes, numberOfRates);
+        double notWantedValue = (double) ((numberOfRates-notWanted)/(numberOfRates+0.1d));
+        double dayValue = (double) (1d/(dayDifference+0.1d));
         double score = likeValue * notWantedValue * dayValue;
         Log.d("image", "likes: "+ likes + ", dislikes "+dislikes+ ", DayDiff: "+dayDifference+" ,notWanted: "+notWanted+", numberofrates: "+numberOfRates);
         Log.d("image", "likeValue: " + likeValue + ", notWantedValue: "+notWantedValue+ ", DayValue: "+dayValue);
         Log.d("image", "score: "+score);
         return score;
+    }
+
+    private double getLikeValue(int likes, int rates){
+        double z = 1.96;
+        if (rates == 0) {rates += 1;}
+        double p = (double)(likes/rates);
+
+        return (double) (p + z*z/(2*rates) - z * Math.sqrt((p*(1-p)+z*z/(4*rates))/rates))/(1+z*z/rates);
     }
 
 

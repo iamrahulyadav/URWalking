@@ -189,11 +189,11 @@ public class Rate_activity extends AppCompatActivity {
     }
 
     private static final String[] shops = new String[] {
-            "Alla Turca Feinkost","Apotheke im Donau-Einkaufszentrum","Ärzte im Donau-Gesundheitszentrum", "asiagourmet",
+            "Alla Turca Feinkost","Apotheke","Ärzte im Donau-Gesundheitszentrum", "asiagourmet",
             "Bäcker Bachmeier","Bäckerei Schifferl","Bäckerei Wünsche im Edeka","Barbershop","Base/E-Plus Shop","Baumgartner Optik",
             "Bears&Friends","Benetton", "Betty Barclay Store","Bijou Brigitte","Biomarkt Neuhoff","Blumen Sitzberger",
             "Bücher Pustet","Bücher Pustet Extra","Bunte Truhe","C&A","Café & Bäckerei Zink","Café & Konditorei Lederer",
-            "Café Centro","Café Latte","Softeis-Automaten","CBR","Christ Juweliere & Uhrmacher","Cookmal!",
+            "Café Centro","Café Latte","CBR","Christ Juweliere & Uhrmacher","Cookmal!",
             "Copy & paper","Das Hörhaus – Terzo-Zentrum","Dean & David","Depot","DER Reisebüro","DER Reisebüro in der Galeria Kaufhof",
             "Deutsche Post & Postbankfinanzcenter","Die Grüne Bar","dm drogeriemarkt","Douglas", "E-Center EDEKA",
             "Ebner Backwaren","Eiscafé Center Italia","ENGEL Briefmarken und Münzen Gold- und Silberankauf","Equivalenza",
