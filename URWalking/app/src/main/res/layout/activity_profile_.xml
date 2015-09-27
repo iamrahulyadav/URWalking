@@ -33,7 +33,7 @@
         android:gravity="center"
         android:textSize="24dp"
         android:layout_above="@+id/scoreLabel"
-        android:layout_toEndOf="@+id/backwards" />
+        android:layout_alignParentEnd="true" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
         android:gravity="center"
         android:textSize="24dp"
         android:layout_below="@+id/user"
-        android:layout_alignEnd="@+id/username" />
+        android:layout_alignParentEnd="true" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
