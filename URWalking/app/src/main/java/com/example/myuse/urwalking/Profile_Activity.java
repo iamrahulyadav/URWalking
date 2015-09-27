@@ -41,6 +41,13 @@ public class Profile_Activity extends Activity {
                 backFromProfile();
             }
         });
+        Button button2 = (Button)findViewById(R.id.changeMailButton);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeMail();
+            }
+        });
         Button button3 = (Button)findViewById(R.id.changePasswordButton);
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
