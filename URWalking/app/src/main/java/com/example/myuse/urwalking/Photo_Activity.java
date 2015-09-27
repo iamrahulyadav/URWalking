@@ -70,22 +70,6 @@ public class Photo_Activity extends Activity {
         });
     }
 
-    private void setupScore(){
-        ParseUser user = ParseUser.getCurrentUser();
-        //final int score = user.getInt("score") + 100;
-        //user.put("score", score);
-        user.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    //Toast.makeText(getApplicationContext(), ("Ihr aktuelle score ist: " + score), Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "hat nicht geworked", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
     private static final String[] shops = new String[] {
             "Alla Turca Feinkost","Apotheke im Donau-Einkaufszentrum","Ärzte im Donau-Gesundheitszentrum", "asiagourmet",
             "Bäcker Bachmeier","Bäckerei Schifferl","Bäckerei Wünsche im Edeka","Barbershop","Base/E-Plus Shop","Baumgartner Optik",
@@ -274,7 +258,6 @@ public class Photo_Activity extends Activity {
                             // Show a simple toast message
                             Toast.makeText(Photo_Activity.this, "Image Uploaded", Toast.LENGTH_LONG).show();
                             uploadBar.setVisibility(View.GONE);
-                            setupScore();
                         } else {
                             Toast.makeText(getApplicationContext(), "Upload didn't work 2", Toast.LENGTH_SHORT).show();
                             Log.d("Fail", "2 Did not work because: " + e);

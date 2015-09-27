@@ -1,6 +1,5 @@
 package com.example.myuse.urwalking;
 
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
@@ -28,13 +27,17 @@ import java.util.Random;
 *   Activity in der Bilder bewertet werden können
  */
 public class Rate_activity extends AppCompatActivity {
-    ImageView current;
-    ProgressBar progress;
-    CheckBox check;
-    TextView header;
-    String currentName;
-    ParseObject loadedPic;
-    boolean loading = false;
+    private ImageView current;
+    private Bitmap bmp;
+    private ProgressBar progress;
+    private CheckBox check;
+    private TextView header;
+    private String currentName;
+    private ParseObject loadedPic;
+    private boolean loading = false;
+
+    private final int rateScoreNumber = 20;
+    private final int photoPropScoreNumber = 100;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,44 +49,7 @@ public class Rate_activity extends AppCompatActivity {
         header = (TextView)findViewById(R.id.headerRate);
         current = (ImageView)findViewById(R.id.currentImage);
         nextpicture();
-        progress.setVisibility(View.INVISIBLE);
     }
-
-    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
-                                                         int reqWidth, int reqHeight) {
-
-        // First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(res, resId, options);
-
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeResource(res, resId, options);
-    }
-
-    private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-            // Calculate ratios of height and width to requested height and width
-            final int heightRatio = Math.round((float) height / (float) reqHeight);
-            final int widthRatio = Math.round((float) width / (float) reqWidth);
-
-            // Choose the smallest ratio as inSampleSize value, this will guarantee
-            // a final image with both dimensions larger than or equal to the
-            // requested height and width.
-            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
-        }
-        return inSampleSize;
-    }
-
 
     /*
     *   Zukünftiger Start um nächstes Bild auszuwählen
@@ -106,7 +72,10 @@ public class Rate_activity extends AppCompatActivity {
                     fileObject.getDataInBackground(new GetDataCallback() {
                         public void done(byte[] data, ParseException e) {
                             if (e == null) {
-                                Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                                if(null!=bmp) {
+                                    bmp.recycle();
+                                }
+                                bmp = BitmapFactory.decodeByteArray(data,0, data.length);
                                 current.setVisibility(View.VISIBLE);
                                 current.setImageBitmap(bmp);
                                 progress.setVisibility(View.INVISIBLE);
@@ -130,60 +99,90 @@ public class Rate_activity extends AppCompatActivity {
     }
 
     private void Rate(){
-        Algorithm(ParseUser.getCurrentUser().getInt("score"));
-    }
-
-
-
-    private int Algorithm(int score){
-        score+=20;final int finalScore = score;
-        ParseUser user = ParseUser.getCurrentUser();
-        user.put("score", finalScore);
-        user.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e != null) {
-                    Toast.makeText(getApplicationContext(), "hat nicht geworked", Toast.LENGTH_SHORT).show();
+        String userName = ParseUser.getCurrentUser().getUsername();//get the username
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("scores");
+        query.whereEqualTo("username", userName);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> scoreList, ParseException e) {
+                if (e == null) {//if everything worked well / user was found...
+                    ParseObject scoreObject = scoreList.get(0);
+                    int score = scoreObject.getInt("score");    //get the score
+                    score += rateScoreNumber;
+                    scoreObject.put("score", score);
+                    scoreObject.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                        }
+                    });
                 }
             }
         });
-        return score;
     }
 
-    public void nicePhoto(View v) {
+    private void sumUserPoints(final int multiplicator){    /* sums up the points of the user of a picture */
+        String userName = loadedPic.getString("User");      //get the name of the user of the rated picture
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("scores");
+        query.whereEqualTo("username", userName);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> scoreList, ParseException e) {
+                if (e == null) {                           //if everything worked well / user was found...
+                    ParseObject scoreObject = scoreList.get(0);
+                    int score = scoreObject.getInt("score");       //get the score of proprietor of the picture
+                    score += photoPropScoreNumber * multiplicator;               //set it up by x times the multiplicator
+                    scoreObject.put("score", score);                //then save it in the user object
+                    scoreObject.saveInBackground(new SaveCallback() {//and finally in the database
+                        @Override
+                        public void done(ParseException e) {
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+
+
+    public void nicePhoto(View v) {  // sums up the like number
         if(!loading) {
             int currentLikes = loadedPic.getInt("likes");
             loadedPic.put("likes", currentLikes + 1);//add to likes 1
             if (check.isChecked()) {//add to notthewanted 1
                 checkPhoto();
+                sumUserPoints(1);
             }
-            loadedPic.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-
-                }
-            });
-            nextpicture();
+            else {
+                sumUserPoints(2);
+            }
+            pictureRating();
         }
     }
-    public void badPhoto(View v) {
+    public void badPhoto(View v) { // sums up the dislike number
         if(!loading) {
             int currentDisLikes = loadedPic.getInt("dislikes");
             loadedPic.put("dislikes", currentDisLikes + 1);//add to dislikes 1
             if (check.isChecked()) {//add to notthewanted 1
                 checkPhoto();
             }
-            loadedPic.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-
-                }
-            });
-            nextpicture();
+            else {
+                sumUserPoints(1);
+            }
+            pictureRating();
         }
     }
 
-    private void checkPhoto(){
+    private void pictureRating(){           // checks if picture is wanted or not, saves the picture and load the next
+        loadedPic.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+            }
+        });
+        nextpicture();
+    }
+
+
+
+
+    private void checkPhoto(){                          // sums up the notWanted number
         int currentNots = loadedPic.getInt("notTheWanted");
         loadedPic.put("notTheWanted",currentNots+1);//add to dislikes 1
     }

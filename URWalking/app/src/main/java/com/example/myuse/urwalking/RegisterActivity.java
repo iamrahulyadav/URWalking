@@ -16,7 +16,9 @@ import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -52,7 +54,23 @@ public class RegisterActivity extends AppCompatActivity {
         ParseUser user = new ParseUser();
         user.setUsername(mail);
         user.setPassword(p);
-        user.put("score",0);
+
+
+        // Create a New Class called "images" in Parse
+        ParseObject score = new ParseObject("scores");
+        // Create a column named "Image" and set the string
+        score.put("username", mail);
+        // Create a column named "Store" and insert the image
+        score.put("score", 0);
+        // Create the class and the columns
+        score.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+            }
+        });
+
+
+
         if(mail.length()>0) {
             if(!(p.length()>0))
                 Toast.makeText(getApplicationContext(), (CharSequence) "Passwort muss mindestens ein Zeichen enthalten", Toast.LENGTH_SHORT).show();

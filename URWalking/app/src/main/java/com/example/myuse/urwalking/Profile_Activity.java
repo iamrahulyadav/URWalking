@@ -3,6 +3,7 @@ package com.example.myuse.urwalking;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
@@ -12,13 +13,21 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.RequestPasswordResetCallback;
 import com.parse.SaveCallback;
 
+import java.util.List;
+
 public class Profile_Activity extends Activity {
     private String m_Text = "";
+    private int score = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,9 +155,16 @@ public class Profile_Activity extends Activity {
     }
 
     private void getScore(String id){
-        int score;
-        score = ParseUser.getCurrentUser().getInt("score");
-        TextView scoreView = (TextView)findViewById(R.id.scoreUser);
-        scoreView.setText(score+"");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("scores");
+        query.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> scoreList, ParseException e) {
+                if (e == null) {
+                    score = scoreList.get(0).getInt("score");
+                    TextView scoreView = (TextView) findViewById(R.id.scoreUser);
+                    scoreView.setText(score + "");
+                }
+            }
+        });
     }
 }
