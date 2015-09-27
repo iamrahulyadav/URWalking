@@ -16,13 +16,14 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.List;
 
 public class HighscoreActivity extends AppCompatActivity {
 
-    TextView user1, user2, user3, user4, user5, user6, user7, user8, user9, user10;
-    TextView score1, score2, score3, score4, score5, score6, score7, score8, score9, score10;
+    TextView user1, user2, user3, user4, user5, user6, user7, user8, user9;
+    TextView score1, score2, score3, score4, score5, score6, score7, score8, score9;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,6 @@ public class HighscoreActivity extends AppCompatActivity {
         user7 = (TextView) findViewById(R.id.user7);
         user8 = (TextView) findViewById(R.id.user8);
         user9 = (TextView) findViewById(R.id.user9);
-        user10 = (TextView) findViewById(R.id.user10);
 
         score1 = (TextView) findViewById(R.id.score1);
         score2 = (TextView) findViewById(R.id.score2);
@@ -61,27 +61,25 @@ public class HighscoreActivity extends AppCompatActivity {
         score7 = (TextView) findViewById(R.id.score7);
         score8 = (TextView) findViewById(R.id.score8);
         score9 = (TextView) findViewById(R.id.score9);
-        score10 = (TextView) findViewById(R.id.score10);
 
     }
 
     private void initHighscoreList(){
-        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("scores");
         query.addDescendingOrder("score");
-        query.findInBackground(new FindCallback<ParseUser>() {
-            public void done(List<ParseUser> userList, ParseException e) {
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> userList, ParseException e) {
                 if (e == null) {
                     Log.d("score", "Retrieved " + userList.size() + " users");
-                    user1.setText(userList.get(0).get("username").toString());
-                    user2.setText(userList.get(1).get("username").toString());
-                    user3.setText(userList.get(2).get("username").toString());
-                    user4.setText(userList.get(3).get("username").toString());
-                    user5.setText(userList.get(4).get("username").toString());
-                    user6.setText(userList.get(5).get("username").toString());
-                    user7.setText(userList.get(6).get("username").toString());
-                    user8.setText(userList.get(7).get("username").toString());
-                    user9.setText(userList.get(8).get("username").toString());
-                    user10.setText(userList.get(9).get("username").toString());
+                    user1.setText(userList.get(0).getString("username"));
+                    user2.setText(userList.get(1).getString("username"));
+                    user3.setText(userList.get(2).getString("username"));
+                    user4.setText(userList.get(3).getString("username"));
+                    user5.setText(userList.get(4).getString("username"));
+                    user6.setText(userList.get(5).getString("username"));
+                    user7.setText(userList.get(6).getString("username"));
+                    user8.setText(userList.get(7).getString("username"));
+                    user9.setText(userList.get(8).getString("username"));
 
                     score1.setText(userList.get(0).get("score").toString());
                     score2.setText(userList.get(1).get("score").toString());
@@ -92,16 +90,12 @@ public class HighscoreActivity extends AppCompatActivity {
                     score7.setText(userList.get(6).get("score").toString());
                     score8.setText(userList.get(7).get("score").toString());
                     score9.setText(userList.get(8).get("score").toString());
-                    score10.setText(userList.get(9).get("score").toString());
-
-
 
                 } else {
                     Log.d("score", "Error: " + e.getMessage());
                 }
             }
         });
-
     }
 
     @Override

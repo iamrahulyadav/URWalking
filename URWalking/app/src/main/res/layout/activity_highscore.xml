@@ -212,29 +212,6 @@
             android:layout_alignParentRight="true"
             android:text="200"/>
     </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/number10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/number9">
-        <TextView
-            android:id="@+id/user10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:padding="10dp"
-            android:layout_alignParentLeft="true"
-            android:text="username"/>
-
-        <TextView
-            android:id="@+id/score10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:textSize="20sp"
-            android:layout_alignParentRight="true"
-            android:text="200"/>
-    </RelativeLayout>
 
     <Button
         android:layout_width="wrap_content"
