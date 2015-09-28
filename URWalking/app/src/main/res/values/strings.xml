@@ -11,6 +11,6 @@
     <string name="counter">0</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_top_pictures">TopPicturesActivity</string>
-    <string name="title_activity_highscore">HighscoreActivity</string>
+    <string name="title_activity_top_pictures">Top Bilder</string>
+    <string name="title_activity_highscore">Highscore</string>
 </resources>

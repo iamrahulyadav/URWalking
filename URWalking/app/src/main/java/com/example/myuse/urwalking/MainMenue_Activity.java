@@ -27,28 +27,13 @@ public class MainMenue_Activity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     public void perform_end(View v)
     {
         finish();
     }
     public void rate(View v)
     {
-       Toast.makeText(getApplicationContext(), (CharSequence) "Bewerten Sie Bilder um Punkte zu erhalten", Toast.LENGTH_SHORT).show();
+       //Toast.makeText(getApplicationContext(), (CharSequence) "Bewerten Sie Bilder um Punkte zu erhalten", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, Rate_activity.class);
         intent.putExtra("email", (String) getIntent().getCharSequenceExtra("email"));
         this.startActivity(intent);
@@ -58,11 +43,11 @@ public class MainMenue_Activity extends AppCompatActivity {
         Intent intent = new Intent(this, Help_Activity.class);
         intent.putExtra("email",(String)getIntent().getCharSequenceExtra("email"));
         this.startActivity(intent);
-        Toast.makeText(getApplicationContext(), (CharSequence) "Erhalten Sie Hilfe", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getApplicationContext(), (CharSequence) "Erhalten Sie Hilfe", Toast.LENGTH_SHORT).show();
     }
     public void photo(View v)
     {
-        Toast.makeText(getApplicationContext(), (CharSequence) "Machen Sie Fotos um Punkte zu erhalten", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getApplicationContext(), (CharSequence) "Machen Sie Fotos um Punkte zu erhalten", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, Photo_Activity.class);
         intent.putExtra("email", (String) getIntent().getCharSequenceExtra("email"));
         this.startActivity(intent);
@@ -72,7 +57,7 @@ public class MainMenue_Activity extends AppCompatActivity {
         Intent intent = new Intent(this, Profile_Activity.class);
         intent.putExtra("email",(String)getIntent().getCharSequenceExtra("email"));
         this.startActivity(intent);
-        Toast.makeText(getApplicationContext(), (CharSequence)"Hier ist Ihr Profil", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getApplicationContext(), (CharSequence)"Hier ist Ihr Profil", Toast.LENGTH_SHORT).show();
     }
 
     public void topPictures(View v)
@@ -80,7 +65,7 @@ public class MainMenue_Activity extends AppCompatActivity {
         Intent intent = new Intent(this, TopPicturesActivity.class);
         intent.putExtra("email",(String)getIntent().getCharSequenceExtra("email"));
         this.startActivity(intent);
-        Toast.makeText(getApplicationContext(), (CharSequence)"Hier sind die besten Bilder", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getApplicationContext(), (CharSequence)"Hier sind die besten Bilder", Toast.LENGTH_SHORT).show();
     }
 
     public void highscore(View v)
@@ -88,6 +73,6 @@ public class MainMenue_Activity extends AppCompatActivity {
         Intent intent = new Intent(this, HighscoreActivity.class);
         intent.putExtra("email",(String)getIntent().getCharSequenceExtra("email"));
         this.startActivity(intent);
-        Toast.makeText(getApplicationContext(), (CharSequence)"Hier sehen sie die Top Ten User", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getApplicationContext(), (CharSequence)"Hier sehen sie die Top Ten User", Toast.LENGTH_SHORT).show();
     }
 }

@@ -1,20 +1,20 @@
 package com.example.myuse.urwalking;
 
-import android.app.Activity;
+
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapRegionDecoder;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -32,12 +32,11 @@ import com.parse.SaveCallback;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 
-public class Photo_Activity extends Activity {
-    Button b1,b2,b3;
-    ImageView iw;
-    ProgressBar uploadBar;
+public class Photo_Activity extends AppCompatActivity{
+    private Button b1,b2,b3;
+    private ImageView iw;
+    private ProgressBar uploadBar;
     private String m_Text = "";
-    static int CAM_REQUEST;
     private Bitmap bitmap = null;
     private File imageFile;
 
@@ -50,8 +49,8 @@ public class Photo_Activity extends Activity {
         b3=(Button)findViewById(R.id.button_upload);
         iw= (ImageView)findViewById(R.id.imageView);
         uploadBar = (ProgressBar) findViewById(R.id.uploadBar);
-        //pushPicture();
 
+        iw.setOnClickListener(new photoClicker());
         b1.setOnClickListener(new photoClicker());
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +106,7 @@ public class Photo_Activity extends Activity {
         input.setAdapter(adapter);
 
         // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
 
         // Set up the buttons
@@ -173,7 +172,6 @@ public class Photo_Activity extends Activity {
             if (imageFile.exists()){
                 Bitmap bMap = decodeSampledBitmapFromFile(imageFile, 200, 200);
                 iw.setImageBitmap(bMap);
-                //iw.setImageBitmap(BitmapFactory.decodeFile(imageFile.getAbsolutePath()));
                 bitmap = decodeSampledBitmapFromFile(imageFile, 500, 500);
             }
         }
@@ -269,6 +267,13 @@ public class Photo_Activity extends Activity {
             }
             return null;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_photo_, menu);
+        return true;
     }
 
 }

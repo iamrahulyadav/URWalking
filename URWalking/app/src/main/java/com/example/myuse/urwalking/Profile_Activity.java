@@ -1,12 +1,13 @@
 package com.example.myuse.urwalking;
 
-import android.app.Activity;
+
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,9 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
-import com.parse.GetDataCallback;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -25,7 +24,7 @@ import com.parse.SaveCallback;
 
 import java.util.List;
 
-public class Profile_Activity extends Activity {
+public class Profile_Activity extends AppCompatActivity {
     private String m_Text = "";
     private int score = 0;
 
@@ -174,4 +173,12 @@ public class Profile_Activity extends Activity {
             }
         });
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_profile_, menu);
+        return true;
+    }
+
 }

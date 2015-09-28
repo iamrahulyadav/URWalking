@@ -6,15 +6,6 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin" tools:context=".LoginActivity">
 
-    <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="50dp"
-                android:text="Registrieren"
-                android:textColor="@color/black"
-                android:id="@+id/welcome" />
-
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -28,6 +19,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
+                android:password="true"
                 android:hint="Passwort"
                 android:ems="10"
                 android:id="@+id/passwordregister" />
@@ -35,6 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
+                android:password="true"
                 android:hint="Passwort bestätigen"
                 android:ems="10"
                 android:id="@+id/passwordregisterconfirm"
